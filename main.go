@@ -36,8 +36,15 @@ func main() {
 				Name:  "force",
 				Usage: "Execute hakkyo forcefully",
 			},
+			&cli.BoolFlag{
+				Name:  "debug",
+				Usage: "debug mode",
+			},
 		},
 		Action: func(ctx *cli.Context) error {
+			if ctx.Bool("debug") {
+				slog.SetLogLoggerLevel(slog.LevelDebug)
+			}
 			isHato := ctx.Bool("hato")
 			isForce := ctx.Bool("force")
 			if isHato && !isForce {
@@ -45,7 +52,7 @@ func main() {
 				os.Exit(1)
 			}
 
-			fmt.Println("hato", isHato, "force", isForce)
+			slog.Debug("Passed flags", slog.Bool("hato", isHato), slog.Bool("force", isForce))
 			w, _, err := term.GetSize(int(os.Stdin.Fd()))
 			if err != nil {
 				slog.Debug("Failed to get terminal size. Fallback to default value (20)")
