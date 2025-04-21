@@ -53,7 +53,7 @@ func main() {
 			}
 
 			slog.Debug("Passed flags", slog.Bool("hato", isHato), slog.Bool("force", isForce))
-			w, _, err := term.GetSize(int(os.Stdin.Fd()))
+			w, _, err := term.GetSize(int(os.Stdout.Fd()))
 			if err != nil {
 				slog.Debug("Failed to get terminal size. Fallback to default value (20)")
 				w = 20
